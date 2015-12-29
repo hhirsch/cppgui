@@ -29,7 +29,7 @@ UnicodeString Gwen::Utility::Format( const UnicodeChar* ufmt, ... )
 	
 	String fmt = UnicodeToString( ufmt );
 	
-	va_start( s, fmt );
+	va_start( s, ufmt );
 	
 	// Determine the length of the resulting string, this method is much faster
 	// than looping and reallocating a bigger buffer size.
