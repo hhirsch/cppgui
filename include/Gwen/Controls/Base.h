@@ -304,7 +304,7 @@ namespace Gwen
 					caller->Add( handler, func );
 					Gwen::UnicodeString str = accelerator.GetUnicode();
 					Gwen::Utility::Strings::ToUpper( str );
-					Gwen::Utility::Strings::Strip( str, L" " );
+					Gwen::Utility::Strings::Strip( str, U" " );
 					m_Accelerators[ str ] = caller;
 				}
 
@@ -318,7 +318,7 @@ namespace Gwen
 					caller->Add( handler, func, data );
 					Gwen::UnicodeString str = accelerator.GetUnicode();
 					Gwen::Utility::Strings::ToUpper( str );
-					Gwen::Utility::Strings::Strip( str, L" " );
+					Gwen::Utility::Strings::Strip( str, U" " );
 					m_Accelerators[ str ] = caller;
 				}
 
@@ -337,7 +337,7 @@ namespace Gwen
 					caller->GlobalAdd( handler, func );
 					Gwen::UnicodeString str = accelerator.GetUnicode();
 					Gwen::Utility::Strings::ToUpper( str );
-					Gwen::Utility::Strings::Strip( str, L" " );
+					Gwen::Utility::Strings::Strip( str, U" " );
 					m_Accelerators[ str ] = caller;
 				}
 
@@ -350,7 +350,7 @@ namespace Gwen
 					caller->GlobalAdd( handler, func, data );
 					Gwen::UnicodeString str = accelerator.GetUnicode();
 					Gwen::Utility::Strings::ToUpper( str );
-					Gwen::Utility::Strings::Strip( str, L" " );
+					Gwen::Utility::Strings::Strip( str, U" " );
 					m_Accelerators[ str ] = caller;
 				}
 

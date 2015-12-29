@@ -8,6 +8,8 @@
 #ifndef GWEN_UTILITY_H
 #define GWEN_UTILITY_H
 
+#include <codecvt>
+#include <locale>
 #include <sstream>
 #include <vector>
 #include <Gwen/Structures.h>
@@ -43,20 +45,16 @@ namespace Gwen
 		{
 			if ( !strIn.length() ) { return ""; }
 
-			String temp( strIn.length(), ( char ) 0 );
-			std::use_facet< std::ctype<wchar_t> > ( std::locale() ). \
-			narrow( &strIn[0], &strIn[0] + strIn.length(), ' ', &temp[0] );
-			return temp;
+			std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8conv( u8"?", U"�" );
+			return utf8conv.to_bytes( strIn.c_str() );
 		}
 
 		inline UnicodeString StringToUnicode( const String & strIn )
 		{
-			if ( !strIn.length() ) { return L""; }
+			if ( !strIn.length() ) { return U""; }
 
-			UnicodeString temp( strIn.length(), ( wchar_t ) 0 );
-			std::use_facet< std::ctype<wchar_t> > ( std::locale() ). \
-			widen( &strIn[0], &strIn[0] + strIn.length(), &temp[0] );
-			return temp;
+			std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8conv( u8"?", U"�" );
+			return utf8conv.from_bytes( strIn.c_str() );
 		}
 
 		template<typename T> void Replace( T & str, const T & strFind, const T & strReplace )
@@ -109,7 +107,7 @@ namespace Gwen
 			return inside;
 		}
 
-		GWEN_EXPORT UnicodeString Format( const wchar_t* fmt, ... );
+		GWEN_EXPORT UnicodeString Format( const UnicodeChar* fmt, ... );
 
 		namespace Strings
 		{

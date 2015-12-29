@@ -167,7 +167,7 @@ void MenuItem::SetAccelerator( const TextObject & strAccelerator )
 		m_Accelerator = NULL;
 	}
 
-	if ( strAccelerator.GetUnicode() == L"" )
+	if ( strAccelerator.GetUnicode() == U"" )
 	{ return; }
 
 	m_Accelerator = new Controls::Label( this );

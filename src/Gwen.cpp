@@ -29,9 +29,9 @@ namespace Gwen
 			GwenUtil_OutputDebugCharString( strOut );
 		}
 #ifdef UNICODE
-		void Msg( const wchar_t* str, ... )
+		void Msg( const UnicodeChar* str, ... )
 		{
-			wchar_t strOut[1024];
+			UnicodeChar strOut[1024];
 			va_list s;
 			va_start( s, str );
 			vswprintf( strOut, sizeof( strOut ), str, s );

@@ -38,7 +38,7 @@ GWEN_CONTROL_CONSTRUCTOR( HSVColorPicker )
 	int y = m_Before->Y() + 30;
 	{
 		Label* label = new Label( this );
-		label->SetText( L"R:" );
+		label->SetText( U"R:" );
 		label->SizeToContents();
 		label->SetPos( x, y );
 		TextBoxNumeric* numeric = new TextBoxNumeric( this );
@@ -51,7 +51,7 @@ GWEN_CONTROL_CONSTRUCTOR( HSVColorPicker )
 	y += 20;
 	{
 		Label* label = new Label( this );
-		label->SetText( L"G:" );
+		label->SetText( U"G:" );
 		label->SizeToContents();
 		label->SetPos( x, y );
 		TextBoxNumeric* numeric = new TextBoxNumeric( this );
@@ -64,7 +64,7 @@ GWEN_CONTROL_CONSTRUCTOR( HSVColorPicker )
 	y += 20;
 	{
 		Label* label = new Label( this );
-		label->SetText( L"B:" );
+		label->SetText( U"B:" );
 		label->SizeToContents();
 		label->SetPos( x, y );
 		TextBoxNumeric* numeric = new TextBoxNumeric( this );
@@ -82,7 +82,7 @@ void HSVColorPicker::NumericTyped( Gwen::Controls::Base* control )
 
 	if ( !box ) { return; }
 
-	if ( box->GetText() == L"" )	{ return; }
+	if ( box->GetText() == U"" )	{ return; }
 
 	int textValue = atoi( box->GetText().c_str() );
 

@@ -17,7 +17,7 @@ using namespace Gwen::Controls;
 
 GWEN_CONTROL_CONSTRUCTOR( TextBoxNumeric )
 {
-	SetText( L"0" );
+	SetText( U"0" );
 }
 
 bool TextBoxNumeric::IsTextAllowed( const Gwen::UnicodeString & str, int iPos )

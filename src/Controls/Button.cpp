@@ -114,7 +114,7 @@ void Button::OnPress()
 
 void Button::SetImage( const TextObject & strName, bool bCenter )
 {
-	if ( strName.GetUnicode() == L"" )
+	if ( strName.GetUnicode() == U"" )
 	{
 		if ( m_Image )
 		{

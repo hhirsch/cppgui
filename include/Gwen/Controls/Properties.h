@@ -32,8 +32,8 @@ namespace Gwen
 
 				virtual void PostLayout( Gwen::Skin::Base* skin );
 
-				PropertyRow* Add( const TextObject & text, const TextObject & value = L"" );
-				PropertyRow* Add( const TextObject & text, Property::Base* pProp, const TextObject & value = L"" );
+				PropertyRow* Add( const TextObject & text, const TextObject & value = U"" );
+				PropertyRow* Add( const TextObject & text, Property::Base* pProp, const TextObject & value = U"" );
 				PropertyRow* Find( const TextObject & text );
 
 				virtual int GetSplitWidth();

@@ -161,7 +161,7 @@ namespace Gwen
 
 			for ( float i = 0; i < text.length(); i++ )
 			{
-				wchar_t chr = text[i];
+				UnicodeChar chr = text[i];
 
 				if ( chr == ' ' ) { continue; }
 

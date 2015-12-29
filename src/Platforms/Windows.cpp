@@ -66,14 +66,14 @@ void Gwen::Platform::GetDesktopSize( int & w, int & h )
 
 Gwen::UnicodeString Gwen::Platform::GetClipboardText()
 {
-	if ( !OpenClipboard( NULL ) ) { return L""; }
+	if ( !OpenClipboard( NULL ) ) { return U""; }
 
 	HANDLE hData = GetClipboardData( CF_UNICODETEXT );
 
 	if ( hData == NULL )
 	{
 		CloseClipboard();
-		return L"";
+		return U"";
 	}
 
 	wchar_t* buffer = ( wchar_t* ) GlobalLock( hData );

@@ -52,7 +52,7 @@ GWEN_CONTROL_CONSTRUCTOR( ComboBox )
 	m_Button = pArrow;
 	m_SelectedItem = NULL;
 	SetAlignment( Gwen::Pos::Left | Gwen::Pos::CenterV );
-	SetText( L"" );
+	SetText( U"" );
 	SetMargin( Margin( 3, 0, 0, 0 ) );
 	SetTabable( true );
 	SetKeyboardInputEnabled( true );
@@ -60,7 +60,7 @@ GWEN_CONTROL_CONSTRUCTOR( ComboBox )
 
 MenuItem* ComboBox::AddItem( const UnicodeString & strLabel, const String & strName )
 {
-	MenuItem* pItem = m_Menu->AddItem( strLabel, L"" );
+	MenuItem* pItem = m_Menu->AddItem( strLabel, U"" );
 	pItem->SetName( strName );
 	pItem->onMenuItemSelected.Add( this, &ComboBox::OnItemSelected );
 

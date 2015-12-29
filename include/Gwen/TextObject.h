@@ -37,7 +37,7 @@ namespace Gwen
 				m_Unicode = Gwen::Utility::StringToUnicode( m_String );
 			}
 
-			TextObject( const wchar_t* text )
+			TextObject( const UnicodeChar* text )
 			{
 				m_Unicode = text;
 				m_String = Gwen::Utility::UnicodeToString( m_Unicode );

@@ -61,7 +61,7 @@ namespace Gwen
 
 	namespace Debug
 	{
-		void GWEN_EXPORT Msg( const wchar_t* str, ... );
+		void GWEN_EXPORT Msg( const UnicodeChar* str, ... );
 		void GWEN_EXPORT Msg( const char* str, ... );
 		void GWEN_EXPORT AssertCheck( bool b, const char* strMsg );
 	}

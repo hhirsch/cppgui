@@ -15,11 +15,6 @@ using namespace Gwen;
 #pragma warning(disable:4267)// conversion from 'size_t' to 'int', possible loss of data
 #endif
 
-#ifdef __MINGW32__
-#undef vswprintf
-#define vswprintf _vsnwprintf
-#endif
-
 #ifdef _MSC_VER
 #define GWEN_FNULL "NUL"
 #define va_copy(d,s) ((d) = (s))
@@ -27,10 +22,12 @@ using namespace Gwen;
 #define GWEN_FNULL "/dev/null"
 #endif
 
-UnicodeString Gwen::Utility::Format( const wchar_t* fmt, ... )
+UnicodeString Gwen::Utility::Format( const UnicodeChar* ufmt, ... )
 {
 	va_list s;
 	int len = 0;
+	
+	String fmt = UnicodeToString( ufmt );
 	
 	va_start( s, fmt );
 	
@@ -40,26 +37,26 @@ UnicodeString Gwen::Utility::Format( const wchar_t* fmt, ... )
 		FILE* fnull = fopen( GWEN_FNULL, "wb" );
 		va_list c;
 		va_copy( c, s );
-		len = vfwprintf( fnull, fmt, c );
+		len = vfprintf( fnull, fmt.c_str(), c );
 		va_end( c );
 		fclose( fnull );
 	} 
 	
-	UnicodeString strOut;
+	String strOut;
 	
 	if (len > 0)
 	{
 		strOut.resize( len + 1 );
 		va_list c;
 		va_copy( c, s );
-		len = vswprintf( &strOut[0], strOut.size(), fmt, c );
+		len = vsnprintf( &strOut[0], strOut.size(), fmt.c_str(), c );
 		va_end( c );
 		strOut.resize( len );
 	}
 	
 	va_end( s );
 	
-	return strOut;
+	return StringToUnicode( strOut );
 }
 
 
@@ -71,7 +68,7 @@ void Gwen::Utility::Strings::Split( const Gwen::String & str, const Gwen::String
 	int iSepLen = seperator.length();
 	size_t i = str.find( seperator, 0 );
 
-	while ( i != std::string::npos )
+	while ( i != String::npos )
 	{
 		outbits.push_back( str.substr( iOffset, i - iOffset ) );
 		iOffset = i + iSepLen;
@@ -90,7 +87,7 @@ void Gwen::Utility::Strings::Split( const Gwen::UnicodeString & str, const Gwen:
 	int iSepLen = seperator.length();
 	size_t i = str.find( seperator, 0 );
 
-	while ( i != std::wstring::npos )
+	while ( i != UnicodeString::npos )
 	{
 		outbits.push_back( str.substr( iOffset, i - iOffset ) );
 		iOffset = i + iSepLen;
@@ -104,21 +101,23 @@ void Gwen::Utility::Strings::Split( const Gwen::UnicodeString & str, const Gwen:
 
 int Gwen::Utility::Strings::To::Int( const Gwen::String & str )
 {
-	if ( str == "" ) { return 0; }
+	if ( str.size() == 0 ) { return 0; }
 
 	return atoi( str.c_str() );
 }
 
 float Gwen::Utility::Strings::To::Float( const Gwen::String & str )
 {
-	if ( str == "" ) { return 0.0f; }
+	if ( str.size() == 0 ) { return 0.0f; }
 
 	return ( float ) atof( str.c_str() );
 }
 
 float Gwen::Utility::Strings::To::Float( const Gwen::UnicodeString & str )
 {
-	return wcstod( str.c_str(), NULL );
+	if ( str.size() == 0 ) { return 0.0f; }
+
+	return ( float ) atof( UnicodeToString( str ).c_str() );
 }
 
 bool Gwen::Utility::Strings::To::Bool( const Gwen::String & str )
@@ -157,7 +156,7 @@ bool Gwen::Utility::Strings::Wildcard( const TextObject & strWildcard, const Tex
 
 	if ( strWildcard == "*" ) { return true; }
 
-	int iPos = W.find( L"*", 0 );
+	int iPos = W.find( U"*", 0 );
 
 	if ( iPos == UnicodeString::npos ) { return strWildcard == strHaystack; }
 
@@ -187,7 +186,7 @@ void Gwen::Utility::Strings::ToUpper( Gwen::UnicodeString & str )
 void Gwen::Utility::Strings::Strip( Gwen::UnicodeString & str, const Gwen::UnicodeString & chars )
 {
 	Gwen::UnicodeString Source = str;
-	str = L"";
+	str = U"";
 
 	for ( unsigned int i = 0; i < Source.length(); i++ )
 	{

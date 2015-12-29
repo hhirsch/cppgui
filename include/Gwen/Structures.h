@@ -39,10 +39,10 @@ namespace Gwen
 		static const unsigned char Count	= 10;
 	}
 
-	typedef std::wstring UnicodeString;
+	typedef std::u32string UnicodeString;
 	typedef std::string String;
 
-	typedef wchar_t UnicodeChar; // Portability??
+	typedef char32_t UnicodeChar;
 
 	struct GWEN_EXPORT Margin
 	{
