@@ -8,8 +8,6 @@
 #ifndef GWEN_UTILITY_H
 #define GWEN_UTILITY_H
 
-#include <codecvt>
-#include <locale>
 #include <sstream>
 #include <vector>
 #include <Gwen/Structures.h>
@@ -45,16 +43,83 @@ namespace Gwen
 		{
 			if ( !strIn.length() ) { return ""; }
 
-			std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8conv( u8"?", U"�" );
-			return utf8conv.to_bytes( strIn.c_str() );
+			String strOut;
+			for ( String::size_type i = 0; i < strIn.size(); ++i ) {
+				String::value_type chr = strIn[i];
+				if ( chr >= 0 && chr <= 0x007F ) {
+					strOut.push_back( chr );
+				} else if ( chr >= 0x0080 && chr <= 0x07FF ) {
+					strOut.push_back( 0xC0 | ((chr >> 6) & 0x1F) );
+					strOut.push_back( 0x80 | (chr & 0x3F) );
+				} else if ( chr >= 0x0800 && chr <= 0xFFFF ) {
+					strOut.push_back( 0xE0 | ((chr >> 12) & 0x0F) );
+					strOut.push_back( 0x80 | ((chr >> 6) & 0x3F) );
+					strOut.push_back( 0x80 | (chr & 0x3F) );
+				} else if ( chr >= 0x10000 && chr <= 0x10FFFF ) {
+					strOut.push_back( 0xF0 | ((chr >> 16) & 0x07) );
+					strOut.push_back( 0x80 | ((chr >> 12) & 0x3F) );
+					strOut.push_back( 0x80 | ((chr >> 6) & 0x3F) );
+					strOut.push_back( 0x80 | (chr & 0x3F) );
+				} else {
+					strOut.append( "\xEF\xBF\xBD" );
+				}
+			}
+
+			return strOut;
 		}
 
 		inline UnicodeString StringToUnicode( const String & strIn )
 		{
 			if ( !strIn.length() ) { return U""; }
 
-			std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf8conv( u8"?", U"�" );
-			return utf8conv.from_bytes( strIn.c_str() );
+			UnicodeString strOut;
+			char32_t uchr;
+			int multibyte = 0;
+			for ( UnicodeString::size_type i = 0; i < strIn.size(); ++i ) {
+				UnicodeString::value_type c = strIn[i];
+				if ( multibyte == 0 ) {
+					if ( c <= 0x7F ) {
+						strOut.push_back( c );
+					} else if ( (c & 0xF8) == 0xF8 ) {
+						// 5+ byte character, prohibited
+						// Skip continuation bytes
+						while ( (((c = strIn[++i]) & 0xC0) == 0x80) && i < strIn.size() );
+						strOut.push_back( 0xFFFD );
+					} else if ((c & 0b11111000) == 0b11110000) {
+						multibyte = 3;
+						uchr = c & 0x07;
+					} else if ((c & 0b11110000) == 0b11100000) {
+						multibyte = 2;
+						uchr = c & 0x0F;
+					} else if ((c & 0b11100000) == 0b11000000) {
+						multibyte = 1;
+						uchr = c & 0x1F;
+					} else {
+						strOut.push_back( 0xFFFD );
+					}
+				} else {
+					if ( (c & 0xC0) == 0x80 ) {
+						uchr <<= 6;
+						uchr |= c & 0x3F;
+					} else {
+						// Unexpected end of multibyte codepoint
+						strOut.push_back( 0xFFFD );
+						// Roll back 1 char (re-loop on current)
+						--i;
+						multibyte = 0;
+						continue;
+					}
+					if ( --multibyte == 0 ) {
+						if ( uchr <= 0x10FFFF ) {
+							strOut.push_back( uchr );
+						} else {
+							strOut.push_back( 0xFFFD );
+						}
+					}
+				}
+			}
+
+			return strOut;
 		}
 
 		template<typename T> void Replace( T & str, const T & strFind, const T & strReplace )
