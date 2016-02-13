@@ -13,7 +13,8 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
-
+#undef far
+#undef near
 
 #define GwenUtil_OutputDebugCharString( lpOutputString ) OutputDebugStringA( lpOutputString )
 #define GwenUtil_OutputDebugWideString( lpOutputString ) OutputDebugStringW( lpOutputString )
