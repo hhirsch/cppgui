@@ -7,7 +7,9 @@
 #include <Gwen/Macros.h>
 #include <Gwen/Platform.h>
 
-#if !defined(_WIN32) && !defined(GWEN_ALLEGRO_PLATFORM)
+#if 1
+// Commented out as Windows.cpp/AllegroPlatform.cpp are currently broken, so we'll always use Null
+//#if !defined(_WIN32) && !defined(GWEN_ALLEGRO_PLATFORM)
 
 #include <time.h>
 

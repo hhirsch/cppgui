@@ -4,7 +4,10 @@
 	See license in Gwen.h
 */
 
-#ifdef _WIN32
+// Disabled because <Gwen/Input/Windows.h> does not exist, and thus this file is currently broken.
+// It will fall back to using Null.cpp
+//#ifdef _WIN32
+#if 0
 
 #ifndef _WIN32_WINNT
 #	define _WIN32_WINNT 0x06000000
