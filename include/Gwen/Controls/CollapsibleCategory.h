@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -13,44 +13,38 @@
 #include <Gwen/Gwen.h>
 #include <Gwen/Skin.h>
 
+namespace Gwen {
+namespace Controls {
+class CollapsibleList;
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		class CollapsibleList;
+class GWEN_EXPORT CollapsibleCategory : public Gwen::Controls::Base {
+public:
+  GWEN_CONTROL(CollapsibleCategory, Gwen::Controls::Base);
 
-		class GWEN_EXPORT CollapsibleCategory : public Gwen::Controls::Base
-		{
-			public:
+  virtual void Render(Skin::Base *skin);
 
-				GWEN_CONTROL( CollapsibleCategory, Gwen::Controls::Base );
+  virtual void SetText(const TextObject &text);
 
-				virtual void Render( Skin::Base* skin );
+  virtual Button *Add(const TextObject &name);
 
-				virtual void SetText( const TextObject & text );
+  virtual void PostLayout(Skin::Base * /*skin*/);
 
-				virtual Button* Add( const TextObject & name );
+  virtual void SetList(Controls::CollapsibleList *p) {
+    m_pList = p;
+  }
 
-				virtual void PostLayout( Skin::Base* /*skin*/ );
+  virtual void UnselectAll();
+  virtual Button *GetSelected();
 
-				virtual void SetList( Controls::CollapsibleList* p ) { m_pList = p; }
+public:
+  Gwen::Event::Caller onSelection;
 
-				virtual void UnselectAll();
-				virtual Button* GetSelected();
+protected:
+  virtual void OnSelection(Controls::Base *control);
 
-			public:
-
-				Gwen::Event::Caller	onSelection;
-
-			protected:
-
-				virtual void OnSelection( Controls::Base* control );
-
-				Controls::Button*			m_pButton;
-				Controls::CollapsibleList*	m_pList;
-		};
-
-	}
+  Controls::Button *m_pButton;
+  Controls::CollapsibleList *m_pList;
+};
+}
 }
 #endif

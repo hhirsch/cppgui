@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -12,41 +12,41 @@
 #include <Gwen/Gwen.h>
 #include <Gwen/Skin.h>
 
+namespace Gwen {
+namespace ControlsInternal {
+class GWEN_EXPORT Dragger : public Controls::Base {
+public:
+  GWEN_CONTROL(Dragger, Controls::Base);
 
-namespace Gwen
-{
-	namespace ControlsInternal
-	{
-		class GWEN_EXPORT Dragger : public Controls::Base
-		{
-			public:
+  virtual void OnMouseMoved(int x, int y, int deltaX, int deltaY);
 
-				GWEN_CONTROL( Dragger, Controls::Base );
+  virtual void OnMouseClickLeft(int x, int y, bool bDown);
+  virtual void Render(Skin::Base *skin);
 
-				virtual void OnMouseMoved( int x, int y, int deltaX, int deltaY );
+  virtual void SetTarget(Controls::Base *pBase) {
+    m_pTarget = pBase;
+  }
+  virtual bool IsDepressed() {
+    return m_bDepressed;
+  }
 
-				virtual void OnMouseClickLeft( int x, int y, bool bDown );
-				virtual void Render( Skin::Base* skin );
+  virtual void SetDoMove(bool b) {
+    m_bDoMove = b;
+  }
 
-				virtual void SetTarget( Controls::Base* pBase ) { m_pTarget = pBase; }
-				virtual bool IsDepressed() { return m_bDepressed; }
+  virtual void OnMouseDoubleClickLeft(int x, int y);
 
-				virtual void SetDoMove( bool b ) { m_bDoMove = b; }
+  Gwen::Event::Caller onDragged;
+  Gwen::Event::Caller onDragStart;
 
-				virtual void OnMouseDoubleClickLeft( int x, int y );
+  Gwen::Event::Caller onDoubleClickLeft;
 
-				Gwen::Event::Caller	onDragged;
-				Gwen::Event::Caller	onDragStart;
-
-				Gwen::Event::Caller	onDoubleClickLeft;
-
-			protected:
-
-				bool				m_bDepressed;
-				Gwen::Point			m_HoldPos;
-				Controls::Base*		m_pTarget;
-				bool				m_bDoMove;
-		};
-	}
+protected:
+  bool m_bDepressed;
+  Gwen::Point m_HoldPos;
+  Controls::Base *m_pTarget;
+  bool m_bDoMove;
+};
+}
 }
 #endif

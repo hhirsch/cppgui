@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -12,40 +12,42 @@
 #include <Gwen/Gwen.h>
 #include <Gwen/Skin.h>
 
+namespace Gwen {
+namespace Controls {
+class GWEN_EXPORT ProgressBar : public Label {
+public:
+  GWEN_CONTROL(ProgressBar, Label);
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		class GWEN_EXPORT ProgressBar : public Label
-		{
-			public:
+  virtual void Render(Skin::Base *skin);
 
-				GWEN_CONTROL( ProgressBar, Label );
+  virtual void SetVertical() {
+    m_bHorizontal = false;
+  }
+  virtual void SetHorizontal() {
+    m_bHorizontal = true;
+  }
 
-				virtual void Render( Skin::Base* skin );
+  virtual void SetValue(float val);
+  virtual float GetValue() const {
+    return m_fProgress;
+  }
 
-				virtual void SetVertical()  { m_bHorizontal = false; }
-				virtual void SetHorizontal() { m_bHorizontal = true; }
+  virtual void SetAutoLabel(bool b) {
+    m_bAutoLabel = b;
+  }
 
-				virtual void SetValue( float val );
-				virtual float GetValue() const { return m_fProgress; }
+  virtual float GetCycleSpeed();
+  virtual void SetCycleSpeed(float f);
 
-				virtual void SetAutoLabel( bool b ) { m_bAutoLabel = b; }
+  virtual void CycleThink(float fDelta);
 
-				virtual float GetCycleSpeed();
-				virtual void SetCycleSpeed( float f );
+protected:
+  float m_fProgress;
+  float m_fCycleSpeed;
 
-				virtual void CycleThink( float fDelta );
-
-			protected:
-
-				float m_fProgress;
-				float m_fCycleSpeed;
-
-				bool m_bHorizontal;
-				bool m_bAutoLabel;
-		};
-	}
+  bool m_bHorizontal;
+  bool m_bAutoLabel;
+};
+}
 }
 #endif

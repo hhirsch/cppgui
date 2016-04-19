@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2012 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2012 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -12,71 +12,67 @@
 #include <Gwen/Controls/Button.h>
 #include <Gwen/Skin.h>
 
+namespace Gwen {
+namespace Controls {
+class GWEN_EXPORT WindowCloseButton : public Button {
+  GWEN_CONTROL_INLINE(WindowCloseButton, Button) {
+    m_pWindow = NULL;
+    SetSize(31, 31);
+    SetText("");
+  }
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		class GWEN_EXPORT WindowCloseButton : public Button
-		{
-				GWEN_CONTROL_INLINE( WindowCloseButton, Button )
-				{
-					m_pWindow = NULL;
-					SetSize( 31, 31 );
-					SetText( "" );
-				}
+  virtual void Render(Skin::Base *skin) {
+    if (!m_pWindow) {
+      return;
+    }
 
-				virtual void Render( Skin::Base* skin )
-				{
-					if ( !m_pWindow ) { return; }
+    skin->DrawWindowCloseButton(this, IsDepressed() && IsHovered(),
+                                IsHovered() && ShouldDrawHover(), IsDisabled());
+  }
 
-					skin->DrawWindowCloseButton( this, IsDepressed() && IsHovered(), IsHovered() && ShouldDrawHover(), IsDisabled() );
-				}
+  void SetWindow(Gwen::Controls::Base *p) {
+    m_pWindow = p;
+  }
 
-				void SetWindow( Gwen::Controls::Base* p )
-				{
-					m_pWindow = p;
-				}
+protected:
+  Controls::Base *m_pWindow;
+};
 
-			protected:
+class GWEN_EXPORT WindowMaximizeButton : public WindowCloseButton {
+  GWEN_CONTROL_INLINE(WindowMaximizeButton, WindowCloseButton) {
+    m_bMaximized = false;
+  };
 
-				Controls::Base* m_pWindow;
-		};
+  virtual void Render(Skin::Base *skin) {
+    if (!m_pWindow) {
+      return;
+    }
 
-		class GWEN_EXPORT WindowMaximizeButton : public WindowCloseButton
-		{
-				GWEN_CONTROL_INLINE( WindowMaximizeButton, WindowCloseButton ) { m_bMaximized = false; };
+    skin->DrawWindowMaximizeButton(this, IsDepressed() && IsHovered(),
+                                   IsHovered() && ShouldDrawHover(), IsDisabled(), m_bMaximized);
+  }
 
-				virtual void Render( Skin::Base* skin )
-				{
-					if ( !m_pWindow ) { return; }
+  virtual void SetMaximized(bool b) {
+    m_bMaximized = b;
+  }
 
-					skin->DrawWindowMaximizeButton( this, IsDepressed() && IsHovered(), IsHovered() && ShouldDrawHover(), IsDisabled(), m_bMaximized );
-				}
+protected:
+  bool m_bMaximized;
+};
 
-				virtual void SetMaximized( bool b )
-				{
-					m_bMaximized = b;
-				}
+class GWEN_EXPORT WindowMinimizeButton : public WindowCloseButton {
+  GWEN_CONTROL_INLINE(WindowMinimizeButton, WindowCloseButton){};
 
-			protected:
+  virtual void Render(Skin::Base *skin) {
+    if (!m_pWindow) {
+      return;
+    }
 
-				bool m_bMaximized;
-		};
-
-		class GWEN_EXPORT WindowMinimizeButton : public WindowCloseButton
-		{
-				GWEN_CONTROL_INLINE( WindowMinimizeButton, WindowCloseButton ) {};
-
-				virtual void Render( Skin::Base* skin )
-				{
-					if ( !m_pWindow ) { return; }
-
-					skin->DrawWindowMinimizeButton( this, IsDepressed() && IsHovered(), IsHovered() && ShouldDrawHover(), IsDisabled() );
-				}
-
-		};
-	}
+    skin->DrawWindowMinimizeButton(this, IsDepressed() && IsHovered(),
+                                   IsHovered() && ShouldDrawHover(), IsDisabled());
+  }
+};
+}
 }
 
 #endif

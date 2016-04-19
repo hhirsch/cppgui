@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2011 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2011 Facepunch Studios
+  See license in Gwen.h
 */
 
 // Disabled because <Gwen/Input/Windows.h> does not exist, and thus this file is currently broken.
@@ -10,11 +10,11 @@
 #if 0
 
 #ifndef _WIN32_WINNT
-#	define _WIN32_WINNT 0x06000000
+#define _WIN32_WINNT 0x06000000
 #else
-#	if _WIN32_WINNT < 0x06000000
-#		error Unsupported platform
-#	endif
+#if _WIN32_WINNT < 0x06000000
+#error Unsupported platform
+#endif
 #endif
 
 #include <Gwen/Macros.h>

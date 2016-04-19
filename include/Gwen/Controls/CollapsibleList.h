@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -15,96 +15,90 @@
 #include <Gwen/Skin.h>
 #include <Gwen/Controls/CollapsibleCategory.h>
 
+namespace Gwen {
+namespace Controls {
+class GWEN_EXPORT CollapsibleList : public Gwen::Controls::ScrollControl {
+public:
+  Gwen::Event::Caller onSelection;
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		class GWEN_EXPORT CollapsibleList : public Gwen::Controls::ScrollControl
-		{
-			public:
+public:
+  GWEN_CONTROL_INLINE(CollapsibleList, Gwen::Controls::ScrollControl) {
+    SetScroll(false, true);
+    SetAutoHideBars(true);
+  }
 
-				Gwen::Event::Caller	onSelection;
+  virtual void Add(Gwen::Controls::CollapsibleCategory *pCategory) {
+    pCategory->SetParent(this);
+    pCategory->Dock(Pos::Top);
+    pCategory->SetMargin(Margin(1, 0, 1, 1));
+    pCategory->SetList(this);
+    pCategory->onSelection.Add(this, &ThisClass::OnSelectionEvent);
+  }
 
-			public:
+  virtual Gwen::Controls::CollapsibleCategory *Add(const TextObject &name) {
+    Gwen::Controls::CollapsibleCategory *pCategory = new CollapsibleCategory(this);
+    pCategory->SetText(name);
+    Add(pCategory);
+    return pCategory;
+  }
 
-				GWEN_CONTROL_INLINE( CollapsibleList, Gwen::Controls::ScrollControl )
-				{
-					SetScroll( false, true );
-					SetAutoHideBars( true );
-				}
+  virtual void Render(Skin::Base *skin) {
+    skin->DrawCategoryHolder(this);
+  }
 
-				virtual void Add( Gwen::Controls::CollapsibleCategory* pCategory )
-				{
-					pCategory->SetParent( this );
-					pCategory->Dock( Pos::Top );
-					pCategory->SetMargin( Margin( 1, 0, 1, 1 ) );
-					pCategory->SetList( this );
-					pCategory->onSelection.Add( this, &ThisClass::OnSelectionEvent );
-				}
+  virtual void UnselectAll() {
+    Base::List &children = GetChildren();
 
-				virtual Gwen::Controls::CollapsibleCategory* Add( const TextObject & name )
-				{
-					Gwen::Controls::CollapsibleCategory* pCategory = new CollapsibleCategory( this );
-					pCategory->SetText( name );
-					Add( pCategory );
-					return pCategory;
-				}
+    for (Base::List::iterator iter = children.begin(); iter != children.end(); ++iter) {
+      Gwen::Controls::CollapsibleCategory *pChild =
+          gwen_cast<Gwen::Controls::CollapsibleCategory>(*iter);
 
-				virtual void Render( Skin::Base* skin )
-				{
-					skin->DrawCategoryHolder( this );
-				}
+      if (!pChild) {
+        continue;
+      }
 
-				virtual void UnselectAll()
-				{
-					Base::List & children = GetChildren();
+      pChild->UnselectAll();
+    }
+  }
 
-					for ( Base::List::iterator iter = children.begin(); iter != children.end(); ++iter )
-					{
-						Gwen::Controls::CollapsibleCategory* pChild = gwen_cast<Gwen::Controls::CollapsibleCategory> ( *iter );
+  virtual Gwen::Controls::Button *GetSelected() {
+    Base::List &children = GetChildren();
 
-						if ( !pChild ) { continue; }
+    for (Base::List::iterator iter = children.begin(); iter != children.end(); ++iter) {
+      Gwen::Controls::CollapsibleCategory *pChild =
+          gwen_cast<Gwen::Controls::CollapsibleCategory>(*iter);
 
-						pChild->UnselectAll();
-					}
-				}
+      if (!pChild) {
+        continue;
+      }
 
-				virtual Gwen::Controls::Button* GetSelected()
-				{
-					Base::List & children = GetChildren();
+      Gwen::Controls::Button *pSelected = pChild->GetSelected();
 
-					for ( Base::List::iterator iter = children.begin(); iter != children.end(); ++iter )
-					{
-						Gwen::Controls::CollapsibleCategory* pChild = gwen_cast<Gwen::Controls::CollapsibleCategory> ( *iter );
+      if (pSelected) {
+        return pSelected;
+      }
+    }
 
-						if ( !pChild ) { continue; }
+    return NULL;
+  }
 
-						Gwen::Controls::Button* pSelected = pChild->GetSelected();
+protected:
+  virtual void OnSelection(Gwen::Controls::CollapsibleCategory *pControl,
+                           Gwen::Controls::Button *pSelected) {
+    onSelection.Call(this);
+  }
 
-						if ( pSelected ) { return pSelected; }
-					}
+  void OnSelectionEvent(Controls::Base *pControl) {
+    Gwen::Controls::CollapsibleCategory *pChild =
+        gwen_cast<Gwen::Controls::CollapsibleCategory>(pControl);
 
-					return NULL;
-				}
+    if (!pChild) {
+      return;
+    }
 
-			protected:
-
-				virtual void OnSelection( Gwen::Controls::CollapsibleCategory* pControl, Gwen::Controls::Button* pSelected )
-				{
-					onSelection.Call( this );
-				}
-
-				void OnSelectionEvent( Controls::Base* pControl )
-				{
-					Gwen::Controls::CollapsibleCategory* pChild = gwen_cast<Gwen::Controls::CollapsibleCategory> ( pControl );
-
-					if ( !pChild ) { return; }
-
-					OnSelection( pChild, pChild->GetSelected() );
-				}
-		};
-
-	}
+    OnSelection(pChild, pChild->GetSelected());
+  }
+};
+}
 }
 #endif

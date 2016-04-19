@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -33,7 +33,7 @@
 // GWEN_DLL
 // - We're including gwen using the dll
 //
-#elif defined( GWEN_DLL )
+#elif defined(GWEN_DLL)
 
 #ifdef _WIN32
 #ifdef __GNUC__
@@ -55,7 +55,5 @@
 #ifndef GWEN_EXPORT
 #define GWEN_EXPORT
 #endif
-
-
 
 #endif // GWEN_EXPORTS_H

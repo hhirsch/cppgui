@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -13,36 +13,32 @@
 
 #include <Gwen/BaseRender.h>
 
-namespace Gwen
-{
+namespace Gwen {
 
-	struct Font
-	{
-		typedef std::list<Font*>	List;
+struct Font {
+  typedef std::list<Font *> List;
 
-		Font()
-		{
-			data = NULL;
-			facename = U"Liberation Sans";
-			size = 10;
-			realsize = 0;
-			bold = false;
-		}
+  Font() {
+    data = NULL;
+    facename = U"Liberation Sans";
+    size = 10;
+    realsize = 0;
+    bold = false;
+  }
 
-		UnicodeString	facename;
-		float size;
-		bool  bold;
+  UnicodeString facename;
+  float size;
+  bool bold;
 
-		// This should be set by the renderer
-		// if it tries to use a font where it's
-		// NULL.
-		void*	data;
+  // This should be set by the renderer
+  // if it tries to use a font where it's
+  // NULL.
+  void *data;
 
-		// This is the real font size, after it's
-		// been scaled by Render->Scale()
-		float realsize;
+  // This is the real font size, after it's
+  // been scaled by Render->Scale()
+  float realsize;
+};
 
-	};
-
-} //namespace Gwen
+} // namespace Gwen
 #endif

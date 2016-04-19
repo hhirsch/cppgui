@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -11,55 +11,46 @@
 #include <Gwen/Controls/Label.h>
 #include <Gwen/Utility.h>
 
+namespace Gwen {
+namespace Controls {
+namespace Layout {
+class GWEN_EXPORT Position : public Base {
+public:
+  GWEN_CONTROL_INLINE(Position, Base) {
+    SetPosition(Pos::Left | Pos::Top);
+  }
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		namespace Layout
-		{
-			class GWEN_EXPORT Position : public Base
-			{
-				public:
+  void PostLayout(Skin::Base *skin) {
+    for (Base::List::iterator it = Children.begin(); it != Children.end(); ++it) {
+      Base *pChild = *it;
 
-					GWEN_CONTROL_INLINE( Position, Base )
-					{
-						SetPosition( Pos::Left | Pos::Top );
-					}
+      if (pChild->GetDock() != Pos::None) {
+        continue;
+      }
 
-					void PostLayout( Skin::Base* skin )
-					{
-						for ( Base::List::iterator it = Children.begin(); it != Children.end(); ++it )
-						{
-							Base* pChild = *it;
+      pChild->Position(m_iPosition);
+    }
+  }
 
-							if ( pChild->GetDock() != Pos::None ) { continue; }
+  void SetPosition(int p) {
+    if (m_iPosition == p) {
+      return;
+    }
 
-							pChild->Position( m_iPosition );
-						}
-					}
+    m_iPosition = p;
+    Invalidate();
+  }
 
-					void SetPosition( int p )
-					{
-						if ( m_iPosition == p ) { return; }
+private:
+  int m_iPosition;
+};
 
-						m_iPosition = p;
-						Invalidate();
-					}
-
-				private:
-
-					int		m_iPosition;
-			};
-
-			class GWEN_EXPORT Center : public Position
-			{
-					GWEN_CONTROL_INLINE( Center, Position )
-					{
-						SetPosition( Pos::Center );
-					}
-			};
-		}
-	}
+class GWEN_EXPORT Center : public Position {
+  GWEN_CONTROL_INLINE(Center, Position) {
+    SetPosition(Pos::Center);
+  }
+};
+}
+}
 }
 #endif

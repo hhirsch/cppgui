@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -15,23 +15,18 @@
 #include <Gwen/Skin.h>
 #include <Gwen/Controls/Slider.h>
 
+namespace Gwen {
+namespace Controls {
+class GWEN_EXPORT VerticalSlider : public Slider {
+  GWEN_CONTROL(VerticalSlider, Slider);
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		class GWEN_EXPORT VerticalSlider : public Slider
-		{
-				GWEN_CONTROL( VerticalSlider, Slider );
+  virtual void Layout(Skin::Base *skin);
+  virtual void Render(Skin::Base *skin);
 
-				virtual void Layout( Skin::Base* skin );
-				virtual void Render( Skin::Base* skin );
-
-				virtual float CalculateValue();
-				virtual void UpdateBarFromValue();
-				virtual void OnMouseClickLeft( int x, int y, bool bDown );
-
-		};
-	}
+  virtual float CalculateValue();
+  virtual void UpdateBarFromValue();
+  virtual void OnMouseClickLeft(int x, int y, bool bDown);
+};
+}
 }
 #endif

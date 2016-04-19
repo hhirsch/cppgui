@@ -16,21 +16,21 @@
 #undef far
 #undef near
 
-#define GwenUtil_OutputDebugCharString( lpOutputString ) OutputDebugStringA( lpOutputString )
-#define GwenUtil_OutputDebugWideString( lpOutputString ) OutputDebugStringW( lpOutputString )
+#define GwenUtil_OutputDebugCharString(lpOutputString) OutputDebugStringA(lpOutputString)
+#define GwenUtil_OutputDebugWideString(lpOutputString) OutputDebugStringW(lpOutputString)
 //#define GwenUtil_WideStringToFloat( _Str ) _wtof( _Str )
 
 #elif defined(__APPLE__)
 
 #include <CoreFoundation/CoreFoundation.h>
-#define GwenUtil_OutputDebugCharString( lpOutputString ) //printf( lpOutputString )
-#define GwenUtil_OutputDebugWideString( lpOutputString ) //wprintf( lpOutputString  )
+#define GwenUtil_OutputDebugCharString(lpOutputString) // printf( lpOutputString )
+#define GwenUtil_OutputDebugWideString(lpOutputString) // wprintf( lpOutputString  )
 //#define GwenUtil_WideStringToFloat( _Str ) wcstof(_Str, NULL)
 
 #elif defined(__linux__)
 
-#define GwenUtil_OutputDebugCharString( lpOutputString ) //printf( lpOutputString )
-#define GwenUtil_OutputDebugWideString( lpOutputString ) //wprintf( lpOutputString  )
+#define GwenUtil_OutputDebugCharString(lpOutputString) // printf( lpOutputString )
+#define GwenUtil_OutputDebugWideString(lpOutputString) // wprintf( lpOutputString  )
 //#define GwenUtil_WideStringToFloat( _Str ) wcstof(_Str, NULL)
 
 #else
@@ -39,49 +39,44 @@
 
 #endif
 
+namespace Gwen {
+template <typename T> inline T Min(T a, T b) {
+  return a < b ? a : b;
+}
 
-namespace Gwen
-{
-	template <typename T>
-	inline T Min( T a, T b )
-	{
-		return a < b ? a : b;
-	}
+template <typename T> inline T Max(T a, T b) {
+  return a > b ? a : b;
+}
 
-	template <typename T>
-	inline T Max( T a, T b )
-	{
-		return a > b ? a : b;
-	}
+template <typename T> inline T Clamp(T current, T vmin, T vmax) {
+  if (current >= vmax) {
+    return vmax;
+  }
 
-	template <typename T>
-	inline T Clamp( T current, T vmin, T vmax )
-	{
-		if ( current >= vmax ) { return vmax; }
+  if (current <= vmin) {
+    return vmin;
+  }
 
-		if ( current <= vmin ) { return vmin; }
+  return current;
+}
 
-		return current;
-	}
+template <typename T, typename T2> inline T Approach(T fCurrent, T fTarget, T2 fDelta) {
+  if (fCurrent < fTarget) {
+    fCurrent += fDelta;
 
-	template <typename T, typename T2>
-	inline T Approach( T fCurrent, T fTarget, T2 fDelta )
-	{
-		if ( fCurrent < fTarget )
-		{
-			fCurrent += fDelta;
+    if (fCurrent > fTarget) {
+      return fTarget;
+    }
+  } else if (fCurrent > fTarget) {
+    fCurrent -= fDelta;
 
-			if ( fCurrent > fTarget ) { return fTarget; }
-		}
-		else if ( fCurrent > fTarget )
-		{
-			fCurrent -= fDelta;
+    if (fCurrent < fTarget) {
+      return fTarget;
+    }
+  }
 
-			if ( fCurrent < fTarget ) { return fTarget; }
-		}
-
-		return fCurrent;
-	}
+  return fCurrent;
+}
 }
 
 #endif

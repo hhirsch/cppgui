@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2012 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2012 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -15,79 +15,81 @@
 #include <Gwen/Controls/Label.h>
 #include <Gwen/Controls/WindowButtons.h>
 
-namespace Gwen
-{
-	namespace Controls
-	{
-		class GWEN_EXPORT WindowCanvas : public Canvas, public Gwen::WindowProvider
-		{
-			public:
+namespace Gwen {
+namespace Controls {
+class GWEN_EXPORT WindowCanvas : public Canvas, public Gwen::WindowProvider {
+public:
+  GWEN_CLASS(WindowCanvas, Controls::Canvas);
 
-				GWEN_CLASS( WindowCanvas, Controls::Canvas );
+  WindowCanvas(int x, int y, int w, int h, Gwen::Skin::Base *pRenderer,
+               const Gwen::String &strWindowTitle = "");
+  ~WindowCanvas();
 
-				WindowCanvas( int x, int y, int w, int h, Gwen::Skin::Base* pRenderer, const Gwen::String & strWindowTitle = "" );
-				~WindowCanvas();
+  virtual void DoThink();
 
-				virtual void DoThink();
+  virtual bool WantsQuit() {
+    return m_bQuit;
+  }
 
-				virtual bool WantsQuit() { return m_bQuit; }
+  // Gwen::WindowProvider
+  virtual void *GetWindow();
 
-				// Gwen::WindowProvider
-				virtual void* GetWindow();
+  virtual bool InputQuit();
 
-				virtual bool InputQuit();
+  Skin::Base *GetSkin(void);
 
-				Skin::Base* GetSkin( void );
+  virtual void Render(Skin::Base *skin);
 
-				virtual void Render( Skin::Base* skin );
+  virtual void SetPos(int x, int y);
+  virtual bool IsOnTop();
 
-				virtual void SetPos( int x, int y );
-				virtual bool IsOnTop();
+  virtual void Layout(Skin::Base *skin);
 
-				virtual void Layout( Skin::Base* skin );
+  virtual bool CanMaximize() {
+    return m_bCanMaximize;
+  }
+  virtual void SetCanMaximize(bool b);
+  virtual void SetMaximize(bool b);
 
-				virtual bool CanMaximize() { return m_bCanMaximize; }
-				virtual void SetCanMaximize( bool b );
-				virtual void SetMaximize( bool b );
+  virtual void SetSizable(bool b) {
+    m_Sizer->SetHidden(!b);
+  }
+  virtual bool GetSizable() {
+    return m_Sizer->Visible();
+  }
 
-				virtual void SetSizable( bool b ) { m_Sizer->SetHidden( !b ); }
-				virtual bool GetSizable() { return m_Sizer->Visible(); }
+protected:
+  virtual void RenderCanvas();
+  virtual void DestroyWindow();
 
-			protected:
+  virtual void CloseButtonPressed();
+  virtual void MaximizeButtonPressed();
+  virtual void MinimizeButtonPressed();
 
-				virtual void RenderCanvas();
-				virtual void DestroyWindow();
+  virtual void Dragger_Start();
+  virtual void Dragger_Moved();
+  virtual void Sizer_Moved();
+  virtual void OnTitleDoubleClicked();
 
-				virtual void CloseButtonPressed();
-				virtual void MaximizeButtonPressed();
-				virtual void MinimizeButtonPressed();
+  void *m_pOSWindow;
+  bool m_bQuit;
 
-				virtual void Dragger_Start();
-				virtual void Dragger_Moved();
-				virtual void Sizer_Moved();
-				virtual void OnTitleDoubleClicked();
+  Gwen::Skin::Base *m_pSkinChange;
 
-				void*		m_pOSWindow;
-				bool		m_bQuit;
+  ControlsInternal::Dragger *m_TitleBar;
+  ControlsInternal::Dragger *m_Sizer;
+  Gwen::Controls::Label *m_Title;
 
-				Gwen::Skin::Base*			m_pSkinChange;
+  Gwen::Point m_WindowPos;
+  Gwen::Point m_HoldPos;
 
-				ControlsInternal::Dragger*	m_TitleBar;
-				ControlsInternal::Dragger*	m_Sizer;
-				Gwen::Controls::Label*		m_Title;
+  bool m_bCanMaximize;
+  bool m_bIsMaximized;
 
-
-				Gwen::Point		m_WindowPos;
-				Gwen::Point		m_HoldPos;
-
-				bool			m_bCanMaximize;
-				bool			m_bIsMaximized;
-
-				Gwen::Controls::WindowCloseButton*		m_pClose;
-				Gwen::Controls::WindowMaximizeButton*	m_pMaximize;
-				Gwen::Controls::WindowMinimizeButton*	m_pMinimize;
-
-		};
-	}
+  Gwen::Controls::WindowCloseButton *m_pClose;
+  Gwen::Controls::WindowMaximizeButton *m_pMaximize;
+  Gwen::Controls::WindowMinimizeButton *m_pMinimize;
+};
+}
 }
 #endif

@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -13,28 +13,23 @@
 #include <Gwen/Gwen.h>
 #include <Gwen/Skin.h>
 
+namespace Gwen {
+namespace Controls {
 
-namespace Gwen
-{
-	namespace Controls
-	{
+class GWEN_EXPORT GroupBox : public Label {
+public:
+  GWEN_CONTROL(GroupBox, Label);
 
-		class GWEN_EXPORT GroupBox : public Label
-		{
-			public:
+  virtual void Render(Skin::Base *skin);
+  virtual void Layout(Skin::Base *skin);
 
-				GWEN_CONTROL( GroupBox, Label );
+  virtual void SetInnerMargin(int i) {
+    m_InnerMargin = i;
+  }
 
-				virtual void Render( Skin::Base* skin );
-				virtual void Layout( Skin::Base* skin );
-
-				virtual void SetInnerMargin( int i ) { m_InnerMargin = i; }
-
-			protected:
-
-				int	m_InnerMargin;
-
-		};
-	}
+protected:
+  int m_InnerMargin;
+};
+}
 }
 #endif

@@ -1,7 +1,7 @@
 /*
-	GWEN
-	Copyright (c) 2010 Facepunch Studios
-	See license in Gwen.h
+  GWEN
+  Copyright (c) 2010 Facepunch Studios
+  See license in Gwen.h
 */
 
 #pragma once
@@ -13,28 +13,25 @@
 #include <Gwen/Gwen.h>
 #include <Gwen/Skin.h>
 
+namespace Gwen {
+namespace Controls {
 
-namespace Gwen
-{
-	namespace Controls
-	{
+class GWEN_EXPORT Rectangle : public Controls::Base {
+public:
+  GWEN_CONTROL(Rectangle, Controls::Base);
 
-		class GWEN_EXPORT Rectangle : public Controls::Base
-		{
-			public:
+  virtual void Render(Skin::Base *skin);
 
-				GWEN_CONTROL( Rectangle, Controls::Base );
+  const Gwen::Color &GetColor() {
+    return m_Color;
+  }
+  void SetColor(const Gwen::Color &col) {
+    m_Color = col;
+  }
 
-				virtual void Render( Skin::Base* skin );
-
-				const Gwen::Color & GetColor() { return m_Color; }
-				void SetColor( const Gwen::Color & col ) { m_Color = col; }
-
-			protected:
-
-				Gwen::Color		m_Color;
-
-		};
-	}
+protected:
+  Gwen::Color m_Color;
+};
+}
 }
 #endif
