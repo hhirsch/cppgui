@@ -161,7 +161,7 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-# Mac crap
+# Mac specific files
 .DS_Store
 *.dylib
 *.a
