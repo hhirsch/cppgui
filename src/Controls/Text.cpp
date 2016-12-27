@@ -269,8 +269,6 @@ void Text::RefreshSizeWrap() {
   m_Lines.clear();
   std::vector<Gwen::UnicodeString> words;
   SplitWords(GetText().GetUnicode(), words);
-  // Adding a bullshit word to the end simplifies the code below
-  // which is anything but simple.
   words.push_back(U"");
 
   if (!GetFont()) {
